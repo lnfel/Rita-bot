@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'rita',
+  cooldown: 5,
 	description: 'Call for Rita.',
 	execute(message) {
 		// set random number

@@ -11,6 +11,7 @@ const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+// dynamically retrieve all your created command files
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -20,6 +21,8 @@ for (const file of commandFiles) {
 	// with the key as the command name and the value as the exported module
 	client.commands.set(command.name, command);
 }
+
+const cooldowns = new Discord.Collection();
 
 // listen for messages
 client.on('message', message => {
@@ -31,9 +34,13 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
-	if (!client.commands.has(commandName)) return;
+	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-	const command = client.commands.get(commandName);
+	if (!command) return;
+
+	if (command.guildOnly && message.channel.type !== 'text') {
+		return message.reply('I can\'t execute that command inside DMs!');
+	}
 
 	if (command.args && !args.length) {
 		let reply = `You didn't provide any command, ${message.author}!`;
@@ -44,6 +51,32 @@ client.on('message', message => {
 
 		return message.channel.send(reply);
  	}
+
+ 	// check if the cooldowns Collection has the command set in it yet. If not, then add it in.
+ 	if (!cooldowns.has(command.name)) {
+		cooldowns.set(command.name, new Discord.Collection());
+	}
+
+	// A variable with the current timestamp.
+	const now = Date.now();
+	// A variable that .get()s the Collection for the triggered command.
+	const timestamps = cooldowns.get(command.name);
+	// A variable that gets the necessary cooldown amount. If you don't supply it in your command file, it'll default to 3. Afterwards, convert it to the proper amount of milliseconds.
+	const cooldownAmount = (command.cooldown || 3) * 1000;
+
+	if (timestamps.has(message.author.id)) {
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before doing \`${command.name}\` again. Mei might see you.`);
+		}
+	}
+
+	// the timestamps Collection doesn't have the message author's ID (or if the author ID did not get deleted as planned),
+	// .set() the author ID with the current timestamp and create a setTimeout() to automatically delete it after the cooldown period has passed
+	timestamps.set(message.author.id, now);
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	try {
 		command.execute(message, args);

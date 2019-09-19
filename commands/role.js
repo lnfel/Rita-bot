@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'role',
-	description: 'Manage user role.',
+	description: "Manage a user's role.",
+	guildOnly: true,
 	args: true,
 	usage: '<user> <role>',
 	execute(message, args) {
