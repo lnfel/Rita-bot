@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +15,7 @@
     "ffmpeg-static": "^2.7.0",
     "node-fetch": "^2.6.0",
     "opusscript": "0.0.7",
+    "youtube-search": "^1.1.4",
     "ytdl-core": "^1.0.3"
-  },
-  "scripts": {
-    "start": "node index.js"
   }
 }

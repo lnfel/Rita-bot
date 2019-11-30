@@ -6,6 +6,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
+// youtube-search
+const search = require('youtube-search');
 
 // create a new Discord client
 const client = new Discord.Client();
