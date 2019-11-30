@@ -1,5 +1,5 @@
 /////////////////////////////////
-// Rita bot version 1.0.0 alpha//
+// Rita bot version 1.0.1 alpha//
 /////////////////////////////////
 
 // require the discord.js module
@@ -25,11 +25,14 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 // listen for messages
-client.on('message', message => {
+client.on('message', async message => {
 	// log messages from the channel Rita has access to
 	console.log(message.content);
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	
+	// needed for playing music
+	//const serverQueue = queue.get(message.guild.id);
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
