@@ -4,7 +4,7 @@ const ytdl = require('ytdl-core');
 const streamOptions = { seek: 85, volume: 1 };
 
 module.exports = {
-	name: 'play',
+	name: 'play-test',
 	cooldown: 5,
 	description: 'Play or Queue a music to the playlist.',
 	usage: '',
