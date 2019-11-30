@@ -6,8 +6,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
-// youtube-search
-const search = require('youtube-search');
 
 // create a new Discord client
 const client = new Discord.Client();
@@ -32,9 +30,6 @@ client.on('message', async message => {
 	console.log(message.content);
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
-	
-	// needed for playing music
-	//const serverQueue = queue.get(message.guild.id);
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
@@ -94,7 +89,7 @@ client.on('message', async message => {
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
-	console.log('Rita on standby, awaiting your orders Captain!');
+	console.log('Rita on standby, awaiting your orders Kanchou!');
 });
 
 // login to Discord with your app's token
