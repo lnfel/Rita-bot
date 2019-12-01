@@ -17,11 +17,11 @@ module.exports = {
 
 		let args = message.content.split(" ");
 		let url = args[1];
-		let VoiceChannel = message.guild.channels.find(channel => channel.id === '650375024473276437');
+		let voiceChannel = message.guild.channels.find(channel => channel.id === '650375024473276437');
 
-		if (VoiceChannel != null) {
-			console.log(VoiceChannel.name + " was found and is a " + VoiceChannel.type + " channel.");
-			VoiceChannel.join()
+		if (voiceChannel != null) {
+			console.log(voiceChannel.name + " was found and is a " + voiceChannel.type + " channel.");
+			voiceChannel.join()
 				.then(connection => {
 					console.log("DJ Rita is now serving Rita-Café");
 					const stream = ytdl('https://www.youtube.com/watch?v=lN7wHDBfxNU&t', { filter : 'audioonly' });
@@ -30,7 +30,7 @@ module.exports = {
 					//const dispatcher = connection.playStream(stream);
 					dispatcher.on("end", end => {
 						console.log("Rita left the cafe.");
-						VoiceChannel.leave();
+						voiceChannel.leave();
 					});
 				})
 				.catch(err => console.log(err));
