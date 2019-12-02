@@ -144,6 +144,12 @@ module.exports = {
 
 				if(musicUrls.length == 0){
 					console.log("No more songs being requested. I would like to take a break for a moment.");
+					message.channel.send({
+						embed: {
+							color: 0x73ffdc,
+							description: "Thank you for listening. If you have another request, I'm just at the bar Kanchou.",
+						}
+					}).catch(err => console.log(err));
 					voiceChannel.leave();
 				} else {
 					setTimeout(() => {
